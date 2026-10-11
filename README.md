@@ -4,7 +4,7 @@
 здесь. Все команды ниже запускаются из этой папки.
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense
+cd путь/к/arm-realsense
 ```
 
 ## 0. Про venv
@@ -36,7 +36,7 @@ cd ~/Desktop/projects && git clone --depth 1 https://github.com/IntelRealSense/l
 ```
 
 ```bash
-cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_BINDINGS=ON -DPYTHON_EXECUTABLE=/Users/macbook/Desktop/projects/arm_realsense/venv/bin/python -DFORCE_RSUSB_BACKEND=ON -DBUILD_EXAMPLES=OFF -DBUILD_GRAPHICAL_EXAMPLES=OFF -DBUILD_UNIT_TESTS=OFF
+cmake -S . -B build -DCMAKE_BUILD_TYPE=Release -DBUILD_PYTHON_BINDINGS=ON -DPYTHON_EXECUTABLE=$PWD/venv/bin/python -DFORCE_RSUSB_BACKEND=ON -DBUILD_EXAMPLES=OFF -DBUILD_GRAPHICAL_EXAMPLES=OFF -DBUILD_UNIT_TESTS=OFF
 ```
 
 ```bash
@@ -54,19 +54,19 @@ libusb. `-DPYTHON_EXECUTABLE` должен указывать ровно на т
 ломает подпись, и на arm64 он просто не загрузится:
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense/venv/lib/python3.12/site-packages && install_name_tool -add_rpath @loader_path pyrealsense2.2.58.3.cpython-312-darwin.so && codesign --force -s - pyrealsense2.2.58.3.cpython-312-darwin.so librealsense2.2.58.3.dylib
+cd путь/к/arm-realsense/venv/lib/python3.12/site-packages && install_name_tool -add_rpath @loader_path pyrealsense2.2.58.3.cpython-312-darwin.so && codesign --force -s - pyrealsense2.2.58.3.cpython-312-darwin.so librealsense2.2.58.3.dylib
 ```
 
 Положить собранный модуль в venv:
 
 ```bash
-cp -a build/Release/pyrealsense2*.so build/Release/librealsense2*.dylib /Users/macbook/Desktop/projects/arm_realsense/venv/lib/python3.12/site-packages/
+cp -a build/Release/pyrealsense2*.so build/Release/librealsense2*.dylib $PWD/venv/lib/python3.12/site-packages/
 ```
 
 Проверка:
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense && venv/bin/python -c "import pyrealsense2 as rs; print(rs.__version__); print([d.get_info(rs.camera_info.name) for d in rs.context().devices])"
+venv/bin/python -c "import pyrealsense2 as rs; print(rs.__version__); print([d.get_info(rs.camera_info.name) for d in rs.context().devices])"
 ```
 
 Должно напечатать версию. Если список устройств пуст — смотри
@@ -143,14 +143,14 @@ HandLandmarker — до всякой камеры и независимо от �
 ## 4. Порядок запуска
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense && sudo venv/bin/python rs_check.py
+sudo venv/bin/python rs_check.py
 ```
 
 Проверка камеры без робота. Кликни по картинке — увидишь, во сколько раз
 окно 9×9 стабильнее одиночного пикселя. Обычно 5–15×.
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense && venv/bin/python calibrate_arm.py
+venv/bin/python calibrate_arm.py
 ```
 
 Калибровка нулей суставов. **Без неё обратная кинематика работать не будет** —
@@ -169,7 +169,7 @@ ls /dev/tty.usbmodem*
 ```
 
 ```bash
-cd /Users/macbook/Desktop/projects/arm_realsense && sudo venv/bin/python rs_control.py
+sudo venv/bin/python rs_control.py
 ```
 
 Основной скрипт. Запускается на паузе, команды в сервы идут только после
