@@ -1,3 +1,5 @@
+<img width="5712" height="4284" alt="IMG_7523 2" src="https://github.com/user-attachments/assets/c756f03c-eb7a-49e7-8491-4192e6c685c4" />
+
 # Управление SO-ARM100 по камере Intel RealSense
 
 Папка самодостаточная: библиотека серв, модель MediaPipe и весь код лежат
